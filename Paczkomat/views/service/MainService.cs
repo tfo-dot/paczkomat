@@ -11,9 +11,9 @@ public class MainService: BaseForm
     private readonly Button _resetWholeButton;
     private readonly Button _goBackButton;
 
-    public MainService(int id) : base("Tryb serwisowy")
+    public MainService() : base("Tryb serwisowy")
     {
-        var servicer = Paczkomat.Instance.GetServicer(id);
+        var servicer = Paczkomat.Instance.Servicer;
         
         // Add a welcome label
         _welcomeLabel = new Label();
@@ -48,7 +48,7 @@ public class MainService: BaseForm
         _goBackButton.Size = new Size(150, 40);
         _goBackButton.Click += (_, _) =>
         {
-            Paczkomat.Instance.SwitchMode(new LockerMeta(ServiceMode.Normal, -1));
+            Paczkomat.Instance.SwitchMode(ServiceMode.Normal);
             SwitchTo(Paczkomat.Instance.GetMainView());
         };
         

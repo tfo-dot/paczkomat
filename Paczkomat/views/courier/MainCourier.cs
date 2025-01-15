@@ -9,9 +9,9 @@ public class MainCourier : BaseForm
     private readonly Button _reportProblemButton;
     private readonly Button _goBackButton;
 
-    public MainCourier(int id) : base("Tryb kuriera")
+    public MainCourier() : base("Tryb kuriera")
     {
-        var courier = Paczkomat.Instance.GetCourier(id);
+        var courier = Paczkomat.Instance.Courier;
 
         // Add a welcome label
         _welcomeLabel = new Label();
@@ -26,7 +26,7 @@ public class MainCourier : BaseForm
         _newPackageButton.Size = new Size(150, 40);
         _newPackageButton.Location = new Point(170, 230);
         _newPackageButton.Click += (_, _) => AddPackage();
-        
+
         // Add a Track Package button
         _reportProblemButton = new Button();
         _reportProblemButton.Text = "Zgłoś problem!";
@@ -45,7 +45,7 @@ public class MainCourier : BaseForm
         _goBackButton.Location = new Point(170, 300);
         _goBackButton.Click += (_, _) =>
         {
-            Paczkomat.Instance.SwitchMode(new LockerMeta(ServiceMode.Normal, -1));
+            Paczkomat.Instance.SwitchMode(ServiceMode.Normal);
             SwitchTo(Paczkomat.Instance.GetMainView());
         };
 

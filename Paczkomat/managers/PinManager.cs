@@ -1,53 +1,18 @@
-﻿using MySql.Data.MySqlClient;
-
-namespace Paczkomat;
+﻿namespace Paczkomat.managers;
 
 public class PinManager
 {
-    private MySqlConnection? _connection;
-
-    private List<PinMeta> _pins = [];
-
-    public void SetConnection(ref MySqlConnection connection)
-    {
-        if (_connection != null)
-        {
-            throw new InvalidOperationException("Connection already set");
-        }
-
-        _connection = connection;
-    }
-
-    public void Sync()
-    {
-        using var packageCmd = new MySqlCommand("select * from pins", _connection);
-
-        var result = packageCmd.ExecuteReader();
-
-        while (result.Read())
-        {
-            var val = result["value"].ToString();
-            var id = Convert.ToInt32(result["id"]);
-
-            _pins.Add(new PinMeta(val!, id));
-        }
-
-        result.Close();
-
-        if (_pins.Count != 0)
-        {
-            var rnd = new Random();
-
-            _pins = [.._pins.OrderBy(_ => rnd.Next())];
-
-            return;
-        }
-
-        Console.WriteLine("Generating new pins...");
-        GeneratePins();
-    }
+    private List<string> _pins = [];
 
     private readonly char[] _validChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    public PinManager()
+    {
+        if (_pins.Count == 0)
+        {
+            GeneratePins();
+        }
+    }
 
     private void GeneratePins()
     {
@@ -103,45 +68,16 @@ public class PinManager
             return false;
         });
 
-        var temp = string.Join(",", pins.Select(elt => $"('{elt}')"));
+        var rnd = new Random();
 
-        {
-            //No error here, just Rider moment
-            using var myCmd = new MySqlCommand("INSERT INTO pins (value) VALUES" + temp, _connection);
-
-            myCmd.ExecuteNonQuery();
-        }
-
-        {
-            using var packageCmd = new MySqlCommand("select * from pins", _connection);
-
-            var result = packageCmd.ExecuteReader();
-
-            while (result.Read())
-            {
-                var val = result["value"].ToString();
-                var id = Convert.ToInt32(result["id"]);
-
-                _pins.Add(new PinMeta(val!, id));
-            }
-
-            var rnd = new Random();
-
-            _pins = [.._pins.OrderBy(_ => rnd.Next())];
-        }
+        _pins = [..pins.OrderBy(_ => rnd.Next())];
     }
 
-    public PinMeta GetNext()
+    public string GetNext()
     {
         var value = _pins[0];
 
         _pins.RemoveAt(0);
-
-        using var cmd = new MySqlCommand("delete from pins where id = @id", _connection);
-
-        cmd.Parameters.AddWithValue("@id", value.Id);
-
-        cmd.ExecuteNonQuery();
 
         return value;
     }
@@ -149,13 +85,7 @@ public class PinManager
     public void Reset()
     {
         _pins.Clear();
-        
-        using var cmd = new MySqlCommand("DELETE FROM pins", _connection);
 
-        cmd.ExecuteNonQuery();
-        
         GeneratePins();
     }
 }
-
-public record PinMeta(string Value, int Id);

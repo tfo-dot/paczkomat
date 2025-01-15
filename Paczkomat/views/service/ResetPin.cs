@@ -10,7 +10,7 @@ public class ResetPin: BaseForm
     {
         // Add a welcome label
         _mainText = new Label();
-        _mainText.Text = $"Chcesz pin skrytki na {x+1} x {y+1}!";
+        _mainText.Text = $"Chcesz zresetować pin skrytki na {x+1} x {y+1}!";
         _mainText.Font = new Font("Arial", 20, FontStyle.Bold);
         _mainText.AutoSize = true;
         _mainText.Location = new Point(180, 90);

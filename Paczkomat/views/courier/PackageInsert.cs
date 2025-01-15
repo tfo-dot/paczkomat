@@ -15,7 +15,7 @@ public class PackageInsert : BaseForm
 
         // Add a welcome label
         _mainText = new Label();
-        _mainText.Text = $"Skrytka otwarta! Kolumna {_package.Column}, rząd {_package.Row}!";
+        _mainText.Text = $"Skrytka otwarta! Kolumna {_package.Column+1}, rząd {_package.Row+1}!";
         _mainText.Font = new Font("Arial", 20, FontStyle.Bold);
         _mainText.AutoSize = true;
         _mainText.Location = new Point(180, 90);

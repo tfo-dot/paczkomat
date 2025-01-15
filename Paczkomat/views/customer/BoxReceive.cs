@@ -9,13 +9,13 @@ public class BoxReceive: BaseForm
 
     private readonly Package _package;
 
-    public BoxReceive(int id) : base("Odbierz paczkę")
+    public BoxReceive() : base("Odbierz paczkę")
     {
-        _package = Paczkomat.Instance.GetPackage(id);
+        _package = Paczkomat.Instance.GetPackage(Paczkomat.Instance.PackageId);
 
         // Add a welcome label
         _mainText = new Label();
-        _mainText.Text = $"Twoja paczka jest {_package.Column} x {_package.Row}!";
+        _mainText.Text = $"Twoja paczka jest {_package.Column + 1} x {_package.Row + 1}!";
         _mainText.Font = new Font("Arial", 20, FontStyle.Bold);
         _mainText.AutoSize = true;
         _mainText.Location = new Point(180, 90);

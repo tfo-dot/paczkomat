@@ -64,14 +64,20 @@ public class PinInput : BaseForm
 
         var result = Paczkomat.Instance.OpenLock(phone, pin);
 
-        if (result.ServiceMode != ServiceMode.Normal)
+        if (result == null)
         {
-            Paczkomat.Instance.SwitchMode(result);
+            MessageBox.Show("Nie znaleziono takiej paczki!", "Uwaga!");
+            return;
+        }
+
+        if (result != ServiceMode.Normal)
+        {
+            Paczkomat.Instance.SwitchMode((ServiceMode)result);
             SwitchTo(Paczkomat.Instance.GetMainView());
         }
         else
         {
-            SwitchTo(new BoxReceive(result.Id));
+            SwitchTo(new BoxReceive());
         }
     }
     

@@ -11,7 +11,7 @@ public class BoxReceive: BaseForm
 
     public BoxReceive() : base("Odbierz paczkę")
     {
-        _package = Paczkomat.Instance.GetPackage(Paczkomat.Instance.PackageId);
+        _package = Paczkomat.Instance.GetPackage(Paczkomat.Instance.PackageId)!;
 
         // Add a welcome label
         _mainText = new Label();

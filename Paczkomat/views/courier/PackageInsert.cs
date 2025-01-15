@@ -1,21 +1,17 @@
-﻿using Paczkomat.consts;
-
-namespace Paczkomat.views.courier;
+﻿namespace Paczkomat.views.courier;
 
 public class PackageInsert : BaseForm
 {
     private readonly Label _mainText;
     private readonly Button _receiveButton;
 
-    private readonly Package _package;
-
     public PackageInsert(int id) : base("Wsadź paczkę do skrytki")
     {
-        _package = Paczkomat.Instance.GetPackage(id);
+        var package = Paczkomat.Instance.GetPackage(id)!;
 
         // Add a welcome label
         _mainText = new Label();
-        _mainText.Text = $"Skrytka otwarta! Kolumna {_package.Column+1}, rząd {_package.Row+1}!";
+        _mainText.Text = $"Skrytka otwarta! Kolumna {package.Column + 1}, rząd {package.Row + 1}!";
         _mainText.Font = new Font("Arial", 20, FontStyle.Bold);
         _mainText.AutoSize = true;
         _mainText.Location = new Point(180, 90);
@@ -25,7 +21,7 @@ public class PackageInsert : BaseForm
         _receiveButton.Text = "Skrytka zamknięta!";
         _receiveButton.Size = new Size(150, 40);
         _receiveButton.Location = new Point(170, 230);
-        _receiveButton.Click += (_, _) => CloseLocker();
+        _receiveButton.Click += (_, _) => SwitchTo(Paczkomat.Instance.GetMainView());
 
         Controls.Add(_mainText);
         Controls.Add(_receiveButton);
@@ -42,12 +38,5 @@ public class PackageInsert : BaseForm
     protected override void OnResize()
     {
         CenterControls();
-    }
-
-    private void CloseLocker()
-    {
-        Paczkomat.Instance.RemovePackage(_package.Id);
-
-        SwitchTo(Paczkomat.Instance.GetMainView());
     }
 }

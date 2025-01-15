@@ -16,7 +16,15 @@ public class MailManager
     {
         var receiver = new MailAddress(email);
 
-        var msg = new MailMessage(_sender, receiver);
+        MailMessage msg;
+        try
+        {
+            msg = new MailMessage(_sender, receiver);
+        }
+        catch
+        {
+            return;
+        }
 
         msg.Subject = "Twój nowy pin do skrytki";
         msg.Body =
@@ -26,9 +34,9 @@ public class MailManager
         {
             _client.Send(msg);
         }
-        // ReSharper disable once EmptyGeneralCatchClause
         catch
         {
+            // ignored
         }
     }
 
@@ -36,7 +44,15 @@ public class MailManager
     {
         var receiver = new MailAddress("support@paczkomat.dev.pl");
 
-        var msg = new MailMessage(_sender, receiver);
+        MailMessage msg;
+        try
+        {
+            msg = new MailMessage(_sender, receiver);
+        }
+        catch
+        {
+            return;
+        }
 
         msg.Subject = "Paczkomat wymaga uwagi";
         msg.Body =
@@ -56,7 +72,15 @@ public class MailManager
     {
         var receiver = new MailAddress(recipent);
 
-        var msg = new MailMessage(_sender, receiver);
+        MailMessage msg;
+        try
+        {
+            msg = new MailMessage(_sender, receiver);
+        }
+        catch
+        {
+            return;
+        }
 
         msg.Subject = "Nowa paczka w paczkomacie!";
         msg.Body =

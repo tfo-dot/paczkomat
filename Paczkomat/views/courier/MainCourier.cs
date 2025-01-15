@@ -60,7 +60,7 @@ public class MainCourier : BaseForm
 
     private void AddPackage()
     {
-        if (!Paczkomat.Instance.HasEmptyLockers())
+        if (!Paczkomat.Instance.HasEmptyLockers)
         {
             MessageBox.Show("Nie możesz dodać paczki\nPaczkomat jest pełny!", "Uwaga!");
             return;

@@ -8,9 +8,22 @@ public class PinManager
 
     public PinManager()
     {
-        if (_pins.Count == 0)
+        if (Pins.Count == 0)
         {
             GeneratePins();
+        }
+    }
+
+    public List<string> Pins
+    {
+        get => _pins;
+        set
+        {
+            _pins = value;
+            if (_pins.Count == 0)
+            {
+                GeneratePins();
+            }
         }
     }
 
@@ -70,21 +83,21 @@ public class PinManager
 
         var rnd = new Random();
 
-        _pins = [..pins.OrderBy(_ => rnd.Next())];
+        Pins = [..pins.OrderBy(_ => rnd.Next())];
     }
 
     public string GetNext()
     {
-        var value = _pins[0];
+        var value = Pins[0];
 
-        _pins.RemoveAt(0);
+        Pins.RemoveAt(0);
 
         return value;
     }
 
     public void Reset()
     {
-        _pins.Clear();
+        Pins.Clear();
 
         GeneratePins();
     }

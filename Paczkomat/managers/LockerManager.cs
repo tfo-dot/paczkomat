@@ -79,7 +79,6 @@ public class LockerManager
 
     public Package? GetPackage(int id)
     {
-        
         return (from packageEntry in _packages
             where packageEntry.Value.Id == id
             select packageEntry.Value).FirstOrDefault();
@@ -87,16 +86,15 @@ public class LockerManager
 
     public Package? GetPackage(string phone, string pin)
     {
-
         Console.WriteLine($"packages size {_packages.Count}");
-        
+
         foreach (var variable in _packages)
         {
             Console.WriteLine($"{variable.Value}");
         }
 
         Console.WriteLine($"Phone Number: {phone}, Pin: {pin}");
-        
+
         return (from packageEntry in _packages
             where packageEntry.Value.Phone == phone && packageEntry.Value.Pin == pin
             select packageEntry.Value).FirstOrDefault();
@@ -160,5 +158,18 @@ public class LockerManager
 
             Paczkomat.Instance.SendNewPinMessage(value.Email, value.Pin);
         }
+    }
+
+    public void Load(List<Package> records)
+    {
+        foreach (var record in records)
+        {
+            _packages[(record.Row, record.Column)] = record;
+        }
+    }
+
+    public List<Package> GetPackages()
+    {
+        return _packages.Values.ToList();
     }
 }

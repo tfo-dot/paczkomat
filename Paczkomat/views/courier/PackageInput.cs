@@ -11,7 +11,7 @@ public class PackageInput : BaseForm
     private readonly Label _emailLabel;
     private readonly Button _goBackButton;
 
-    public PackageInput():base("Wprowadzanie danych")
+    public PackageInput() : base("Wprowadzanie danych")
     {
         // Phone Label
         _phoneLabel = new Label();
@@ -22,7 +22,7 @@ public class PackageInput : BaseForm
         // Phone TextBox
         _phoneTextBox = new TextBox();
         _phoneTextBox.Location = new Point(200, 50);
-        
+
         _emailLabel = new Label();
         _emailLabel.Text = "Wpisz email:";
         _emailLabel.Location = new Point(50, 50);
@@ -31,13 +31,13 @@ public class PackageInput : BaseForm
         // Phone TextBox
         _emailTextBox = new TextBox();
         _emailTextBox.Location = new Point(200, 150);
-        
+
         // Submit Button
         _submitButton = new Button();
         _submitButton.Text = "Otwórz";
         _submitButton.Location = new Point(150, 200);
         _submitButton.Click += SubmitButton_Click!;
-        
+
         // Goback Button
         _goBackButton = new Button();
         _goBackButton.Text = "Wróć";
@@ -51,20 +51,60 @@ public class PackageInput : BaseForm
         Controls.Add(_emailTextBox);
         Controls.Add(_submitButton);
         Controls.Add(_goBackButton);
-        
+
         CenterControls();
     }
-    
+
     private void SubmitButton_Click(object sender, EventArgs e)
     {
         var phone = _phoneTextBox.Text;
         var email = _emailTextBox.Text;
 
+        if (phone.Length != 9)
+        {
+            MessageBox.Show("Numer telefonu ma 9 znaków!", "Błąd!");
+            return;
+        }
+
+        if (!phone.All(char.IsDigit))
+        {
+            MessageBox.Show("Numer telefonu powininen zawierać same cyfry!", "Błąd!");
+            return;
+        }
+
+        if (!IsValidEmail(email))
+        {
+            MessageBox.Show("Email nie jest prawidłowym adresem email!", "Błąd!");
+            return;
+        }
+
         var newPackage = Paczkomat.Instance.AddPackage(email, phone);
-        
+
         SwitchTo(new PackageInsert(newPackage.Id));
+        return;
+
+        bool IsValidEmail(string str)
+        {
+            if (str.Length == 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+#pragma warning disable CA1806
+                new System.Net.Mail.MailAddress(str);
+#pragma warning restore CA1806
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
-    
+
     private void CenterControls()
     {
         {
@@ -72,13 +112,13 @@ public class PackageInput : BaseForm
             _phoneLabel.Location = new Point(sectionLeft, ClientSize.Height / 6);
             _phoneTextBox.Location = new Point(sectionLeft + 30 + _phoneLabel.Width, ClientSize.Height / 6);
         }
-        
+
         {
             var sectionLeft = (ClientSize.Width - (_emailLabel.Width + 30 + _emailTextBox.Width)) / 2;
             _emailLabel.Location = new Point(sectionLeft, _phoneLabel.Bottom + 30);
             _emailTextBox.Location = new Point(sectionLeft + 30 + _emailLabel.Width, _emailLabel.Top);
         }
-        
+
         {
             var sectionLeft = (ClientSize.Width - (_goBackButton.Width + 30 + _submitButton.Width)) / 2;
             _goBackButton.Location = new Point(sectionLeft, _emailLabel.Bottom + 30);

@@ -21,19 +21,6 @@ public class LockerManager
         _row = Convert.ToInt32(paczkomatSize[1]);
     }
 
-    public void PrettyPrint()
-    {
-        for (var column = 0; column < _column; column++)
-        {
-            for (var row = 0; row < _row; row++)
-            {
-                Console.Write(_packages.ContainsKey((column, row)) ? "*" : " ");
-            }
-
-            Console.WriteLine("|");
-        }
-    }
-
     public bool HasEmptyLockers()
     {
         return _row * _column - _packages.Count > 0;
@@ -64,16 +51,9 @@ public class LockerManager
     public Package AddPackage(string pin, string phone, string email)
     {
         var (column, row) = FindNextPlace();
-
-        Console.WriteLine($"{column}, {row}");
-
+        
         _packages[(column, row)] = new Package(pin, phone, email, column, row, GetNextId());
-
-        foreach (var variable in _packages)
-        {
-            Console.WriteLine($"{variable.Key} - {variable.Value}");
-        }
-
+        
         return _packages[(column, row)];
     }
 
@@ -86,15 +66,6 @@ public class LockerManager
 
     public Package? GetPackage(string phone, string pin)
     {
-        Console.WriteLine($"packages size {_packages.Count}");
-
-        foreach (var variable in _packages)
-        {
-            Console.WriteLine($"{variable.Value}");
-        }
-
-        Console.WriteLine($"Phone Number: {phone}, Pin: {pin}");
-
         return (from packageEntry in _packages
             where packageEntry.Value.Phone == phone && packageEntry.Value.Pin == pin
             select packageEntry.Value).FirstOrDefault();

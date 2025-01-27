@@ -84,7 +84,7 @@ public class MailManager
 
         msg.Subject = "Nowa paczka w paczkomacie!";
         msg.Body =
-            $"Pin do twojej paczki w paczkomacie {SettingsManager.Code} został zresetowany! Nowy pin to: {pin}. Pamiętaj żeby odebrać paczkę na {SettingsManager.Address}!";
+            $"W twoim ulubionym paczkomacie ({SettingsManager.Code}) pojawiła się nowa paczka zarejestrowana! Paczkę odbierzesz korzystając ze swojego numeru telefonu oraz pinu {pin}. Pamiętaj żeby odebrać paczkę na {SettingsManager.Address}!";
 
         try
         {

@@ -58,9 +58,9 @@ public class Paczkomat
         }
     }
 
-    public Courier Courier { get; } = new Courier("1337", "111301337", "Radosław", "Partyka");
+    public Courier Courier { get; } = new("1337", "111301337", "Radosław", "Partyka");
 
-    public Servicer Servicer { get; } = new Servicer("0803", "111302002", "Radosław", "Partyka");
+    public Servicer Servicer { get; } = new("0803", "111302002", "Radosław", "Partyka");
 
     public ServiceMode? OpenLock(string phone, string pin)
     {
@@ -94,9 +94,7 @@ public class Paczkomat
 
         _mailManager.SendNewPackageMessage(email, pin);
 
-        var rv = _lockerManager.AddPackage(pin, phone, email);
-
-        return rv;
+        return _lockerManager.AddPackage(pin, phone, email);
     }
 
     public void SwitchMode(ServiceMode mode)
